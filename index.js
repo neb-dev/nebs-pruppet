@@ -32,8 +32,15 @@ const url = "https://www.amazon.com/";
     'ul#zg_browseRoot a[href="https://www.amazon.com/Best-Sellers-Electronics-Televisions/zgbs/electronics/172659/ref=zg_bs_nav_e_2_1266092011"]'
   );
 
+  await page.waitForSelector("ol#zg-ordered-list", { visible: true });
+
+  //   const names = await page.$$eval(".p13n-sc-truncated", elements => elements.map(item => item.innerHTML));
+  //   console.log(names);
+
+  //   const prices = await page.$$eval(".p13n-sc-price", elements => elements.map(item => item.innerHTML));
+  //   console.log(prices);
+
   // taking screenshot of best sellers in televisions
-  await page.waitForSelector("#zg-ordered-list", { visible: true });
   await page.screenshot({ path: "televisions.png", fullPage: true });
 
   await browser.close();
