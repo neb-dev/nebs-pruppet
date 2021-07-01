@@ -5,6 +5,7 @@ const url = "https://www.amazon.com/";
 (async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
+
   // navigating to amazon's homepage
   await page.goto(url);
 
@@ -32,13 +33,18 @@ const url = "https://www.amazon.com/";
     'ul#zg_browseRoot a[href="https://www.amazon.com/Best-Sellers-Electronics-Televisions/zgbs/electronics/172659/ref=zg_bs_nav_e_2_1266092011"]'
   );
 
+  // logging televisions
   await page.waitForSelector("ol#zg-ordered-list", { visible: true });
-
-  //   const names = await page.$$eval(".p13n-sc-truncated", elements => elements.map(item => item.innerHTML));
-  //   console.log(names);
-
-  //   const prices = await page.$$eval(".p13n-sc-price", elements => elements.map(item => item.innerHTML));
-  //   console.log(prices);
+  const televisions = await page.$$eval("ol.a-ordered-list > li", (nodes) =>
+    nodes.map((element) => {
+      console.log(element);
+      return {
+        name: element.querySelector(".p13n-sc-truncated").innerHTML,
+        price: element.querySelector(".p13n-sc-price") ? element.querySelector(".p13n-sc-price").innerHTML : "Click for details"
+      };
+    })
+  );
+  console.log(televisions);
 
   // taking screenshot of best sellers in televisions
   await page.screenshot({ path: "televisions.png", fullPage: true });
